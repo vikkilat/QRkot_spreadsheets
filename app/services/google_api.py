@@ -21,7 +21,7 @@ PERMISSIONS_BODY = {'type': 'user',
                     'emailAddress': settings.email}
 
 TABLE_VALUES = [
-    ['Отчет от', datetime.now().strftime(FORMAT)],
+    ['Отчет от', '{now_date_time}'],
     ['Топ проектов по скорости закрытия'],
     ['Название проекта', 'Время сбора', 'Описание']]
 
@@ -55,6 +55,9 @@ async def spreadsheets_update_value(
     projects: list,
     wrapper_services: Aiogoogle
 ) -> None:
+    TABLE_VALUES[0][1] = TABLE_VALUES[0][1].format(
+        now_date_time=format(datetime.now().strftime(FORMAT))
+    )
     service = await wrapper_services.discover('sheets', 'v4')
 
     for proj in projects:
